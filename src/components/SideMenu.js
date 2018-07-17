@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 class SideMenu extends Component {
   render() {
     return (
@@ -9,5 +8,4 @@ class SideMenu extends Component {
     );
   }
 }
-
 export default SideMenu;
