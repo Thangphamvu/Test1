@@ -1,50 +1,61 @@
 import React, { Component } from 'react';
 import AccountTransaction from './AccountTransaction';
+
 class BankAccounts extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			isShowDetail: false
-		}
-	}
-	onShowDetail = () => {
-		const {isShowDetail} = this.state;
-		this.setState({
-			isShowDetail: !isShowDetail
-		});
-	}
-	render() {
-		const {isShowDetail} = this.state;
-		let elmDetail = isShowDetail ? <AccountTransaction/> : '';
-		return (
-			<div>
-				<div className="row">
-					<div className="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-						<i className='fa fa-star'></i>
-					</div>
-					<div className="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-						Konto Testaccount <br/>
-						IBAN:
+  constructor(props) {
+    super(props);
+    this.state = {
+      isShowAccountTransaction: false,
+    };
+  }
+  onToggleAccountTransaction = () => {
+    const { isShowAccountTransaction } = this.state;
+    this.setState({
+      isShowAccountTransaction: !isShowAccountTransaction,
+    });
+  };
+  render() {
+    const { isShowAccountTransaction } = this.state;
+    const { account } = this.props;
+    return (
+      <div>
+        <div className="row">
+          <div className="col-xs-1 col-sm-1 col-md-1 col-lg-1 right">
+            <i className="fa fa-star fontStar" />
           </div>
-					<div className="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div>
-					<div className="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div>
-					<div className="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-						date <br/>
-						real time
+          <div className="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+            <div className="row">
+              <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                Konto {account.accountName}
+                <br />
+                IBAN:
+              </div>
+              <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4" />
+              <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2 right">
+                {account.lastSuccessfulUpdate}
+              </div>
+              <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2 accountBalance right">
+                {account.balance} &euro;
+              </div>
+              <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2 right">
+                <i
+                  className={
+                    isShowAccountTransaction
+                      ? 'fa fa-chevron-down fontQuestion pointer'
+                      : 'fa fa-chevron-right fontQuestion pointer'
+                  }
+                  onClick={this.onToggleAccountTransaction}
+                />
+              </div>
+            </div>
           </div>
-					<div className="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-						(data)money &euro;
-          </div>
-					<div className="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-						<i className={isShowDetail ? 'fa fa-chevron-down' : 'fa fa-chevron-right'}
-							onClick={this.onShowDetail}>
-						</i>
-					</div>
-				</div>
-				{elmDetail}
-				<hr/>
-			</div>
-		);
-	}
+        </div>
+        {isShowAccountTransaction && (
+          <AccountTransaction transaction={account.transaction} />
+        )}
+        <hr />
+      </div>
+    );
+  }
 }
 export default BankAccounts;

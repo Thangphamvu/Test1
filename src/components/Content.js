@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
-import BankConnection from './BankConnection';
+import SideMenu from './SideMenu';
+import MainContent from './MainContent';
+
 class Content extends Component {
   render() {
     return (
-      <div className='col-xs-12 col-sm-12 col-md-9 col-lg-9'>
-        <h3>Mein Banking</h3>
-        <p>Meine Konten</p>
-        <BankConnection/>
+      <div>
+        <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2 side-menu">
+          <SideMenu />
+        </div>
+        <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10 main-content">
+          <MainContent />
+        </div>
       </div>
     );
   }

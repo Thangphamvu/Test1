@@ -1,58 +1,68 @@
 import React, { Component } from 'react';
 import BankAccounts from './BankAccounts';
+
 class BankConnection extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			isShowAccount: false
-		}
-	}
-	onToggleAccount = () => {
-		const {isShowAccount} = this.state;
-		this.setState({
-			isShowAccount: !isShowAccount
-		});
-	}
-	render() {
-		const {isShowAccount} = this.state;
-		let elmAccount = isShowAccount ? <BankAccounts/> : '';
-		return (
-			<div>
-				<div className="row mt-40">
-					<div className="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-						<i className='fa fa-facebook-f'></i>
-					</div>
-					<div className="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-						FinAPI Test Bank <br/>
-						BIC:
+  constructor(props) {
+    super(props);
+    this.state = {
+      isShowBankAccounts: false,
+    };
+  }
+  onToggleBankAccounts = () => {
+    const { isShowBankAccounts } = this.state;
+    this.setState({
+      isShowBankAccounts: !isShowBankAccounts,
+    });
+  };
+  render() {
+    const { isShowBankAccounts } = this.state;
+    const { connection, accounts } = this.props;
+    return (
+      <div>
+        {/* connection header */}
+        <div className="row mt-40">
+          <div className="col-xs-1 col-sm-1 col-md-1 col-lg-1 fontF">
+            <span>F</span>
           </div>
-					<div className="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div>
-					<div className="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div>
-					<div className="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-						Saldo per
+          <div className="col-xs-11 col-sm-11 col-md-11 col-lg-11">
+            <div className="row">
+              <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                {connection && connection.bank && connection.bank.name}
+                <br />
+                BIC:{connection && connection.bank && connection.bank.bic}
+              </div>
+              <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4" />
+              <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2 right">
+                Saldo per
+              </div>
+              <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2 right">
+                Saldo in &euro;
+              </div>
+              <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2 right">
+                <i
+                  className={
+                    isShowBankAccounts
+                      ? 'fa fa-chevron-down fontQuestion pointer'
+                      : 'fa fa-chevron-right fontQuestion pointer'
+                  }
+                  onClick={this.onToggleBankAccounts}
+                />
+              </div>
+            </div>
           </div>
-					<div className="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-						Saldo in &euro;
-          </div>
-					<div className="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-						<i className={isShowAccount ? 'fa fa-chevron-down' : 'fa fa-chevron-right'}
-							onClick={this.onToggleAccount}>
-						</i>
-					</div>
-				</div>
-				<hr/>
-				{elmAccount}
-				<div className="row">
-					<div className="col-xs-10 col-sm-10 col-md-10 col-lg-10 bkgr">
-						<div className="left">Deine Liquiditat:</div>
-						<div className="right">(data)numb &euro;</div>
-					</div>
-					<div className="col-xs-2 col-sm-2 col-md-2 col-lg-2 center">
-						<i className="fa fa-question"></i>
-					</div>
-				</div>
-			</div>
-		);
-	}
+        </div>
+        <hr />
+        {/* connection body */}
+        {accounts &&
+          accounts.map(account => {
+            return (
+              isShowBankAccounts && (
+                <BankAccounts key={account.id} account={account} />
+              )
+            );
+          })}
+      </div>
+    );
+  }
 }
 export default BankConnection;

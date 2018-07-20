@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
+
 class Header extends Component {
   render() {
     return (
       <div>
-          Header
+        header
+        <i className="fa fa-angellist" />
+        <i className="fa fa-angellist" />
+        <i className="fa fa-angellist" />
       </div>
     );
   }
