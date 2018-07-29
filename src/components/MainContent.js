@@ -1,12 +1,25 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { sortItems, getData } from '../actions';
 import BankConnection from './BankConnection';
-import { data } from '../database/data';
+import { data } from '../data';
 
 class MainContent extends Component {
+  componentDidMount() {
+    this.props.getData();
+  }
   render() {
+    this.props.getData(1).then(data => {
+      console.log(data);
+    });
     const { banking } = data;
+    console.log(banking);
     return (
-      <div className="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+      <div
+        className="col-xs-12 col-sm-12 col-md-9 col-lg-9"
+        action="http://127.0.0.1:8081/getData"
+        method="GET"
+      >
         <h3>Mein Banking</h3>
         <p>Meine Konten</p>
         <div>
@@ -49,4 +62,15 @@ class MainContent extends Component {
     );
   }
 }
-export default MainContent;
+
+export default connect(
+  ({ tasks }) => ({
+    sortValue: tasks.sortValue,
+    currentPage: tasks.currentPage,
+    itemsPerPage: tasks.itemsPerPage,
+  }),
+  {
+    sortItems,
+    getData,
+  }
+)(MainContent);

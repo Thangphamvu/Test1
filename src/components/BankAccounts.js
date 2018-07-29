@@ -1,24 +1,26 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import AccountTransaction from './AccountTransaction';
 
 class BankAccounts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isShowAccountTransaction: false,
+      showAccountTransaction: false,
     };
   }
-  onToggleAccountTransaction = () => {
-    const { isShowAccountTransaction } = this.state;
+
+  toggleAccountTransaction = () => {
+    const { showAccountTransaction } = this.state;
     this.setState({
-      isShowAccountTransaction: !isShowAccountTransaction,
+      showAccountTransaction: !showAccountTransaction,
     });
   };
+
   render() {
-    const { isShowAccountTransaction } = this.state;
+    const { showAccountTransaction } = this.state;
     const { account } = this.props;
     return (
-      <div>
+      <Fragment>
         <div className="row">
           <div className="col-xs-1 col-sm-1 col-md-1 col-lg-1 right">
             <i className="fa fa-star fontStar" />
@@ -40,21 +42,21 @@ class BankAccounts extends Component {
               <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2 right">
                 <i
                   className={
-                    isShowAccountTransaction
+                    showAccountTransaction
                       ? 'fa fa-chevron-down fontQuestion pointer'
                       : 'fa fa-chevron-right fontQuestion pointer'
                   }
-                  onClick={this.onToggleAccountTransaction}
+                  onClick={this.toggleAccountTransaction}
                 />
               </div>
             </div>
           </div>
         </div>
-        {isShowAccountTransaction && (
+        {showAccountTransaction && (
           <AccountTransaction transaction={account.transaction} />
         )}
         <hr />
-      </div>
+      </Fragment>
     );
   }
 }

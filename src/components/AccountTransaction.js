@@ -1,41 +1,27 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import TransactionItem from './TransactionItem';
 import Pagination from './Pagination';
+import { connect } from 'react-redux';
+import * as actions from '../actions';
 
 class AccountTransaction extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentPage: 2,
-      itemsPerPage: 6,
-      sortValue: 1,
-    };
-  }
-  onClick = number => {
-    this.setState({
-      currentPage: number,
-    });
-  };
-  sortByTime = sortValue => {
-    this.setState({
-      sortValue: sortValue,
-    });
+  sortByTime = () => {
+    this.props.sortByTime();
   };
   render() {
-    const { currentPage, itemsPerPage, sortValue } = this.state;
-    const { transaction } = this.props;
+    const { transaction, sortValue, currentPage, itemsPerPage } = this.props;
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const quantityPage = Math.ceil(transaction.items.length / itemsPerPage);
-    const sortedItems = transaction.items.sort((a, b) => {
+    const sortValueItems = transaction.items.sort((a, b) => {
       if (a.valueDate < b.valueDate) return sortValue;
       else if (a.valueDate > b.valueDate) return -sortValue;
       else return 0;
     });
     const currentItems =
-      sortedItems && sortedItems.slice(indexOfFirstItem, indexOfLastItem);
+      sortValueItems && sortValueItems.slice(indexOfFirstItem, indexOfLastItem);
     return (
-      <div>
+      <Fragment>
         <div className="row mt-20">
           <div className="col-xs-1 col-sm-1 col-md-1 col-lg-1" />
           <div className="col-xs-11 col-sm-11 col-md-11 col-lg-11">
@@ -58,13 +44,11 @@ class AccountTransaction extends Component {
                 Betrag
               </div>
               <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2 right">
-                <span className="pointer" onClick={() => this.sortByTime(1)}>
-                  Buchnungstag
-                </span>
-                <br />
-                <span className="pointer" onClick={() => this.sortByTime(-1)}>
-                  Wertellung{' '}
-                  <i
+                <span
+                  className="pointer"
+                  onClick={() => this.sortByTime(sortValue)}
+                >
+                  Buchnungstag<br />Wertellung<i
                     className={
                       sortValue === 1 ? 'fa fa-caret-down' : 'fa fa-caret-up'
                     }
@@ -86,17 +70,28 @@ class AccountTransaction extends Component {
             Einträge pro Seite
           </div>
           <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4 center">
-            Zeige {indexOfFirstItem + 1} bis {indexOfLastItem} von{' '}
-            {transaction.items.length}
+            Zeige {indexOfFirstItem + 1} bis{' '}
+            {indexOfLastItem <= transaction.items.length
+              ? indexOfLastItem
+              : transaction.items.length}{' '}
+            von {transaction.items.length}
           </div>
-          <Pagination
-            quantityPage={quantityPage}
-            currentPage={currentPage}
-            onClick={this.onClick}
-          />
+          <Pagination quantityPage={quantityPage} />
         </div>
-      </div>
+      </Fragment>
     );
   }
 }
-export default AccountTransaction;
+const mapStateToProps = ({ tasks }) => ({
+  sortValue: tasks.sortValue,
+  currentPage: tasks.currentPage,
+  itemsPerPage: tasks.itemsPerPage,
+});
+const mapDispatchToProps = dispatch => ({
+  sortByTime: () => dispatch(actions.sortItems()),
+  getData: () => dispatch(actions.getData()),
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AccountTransaction);

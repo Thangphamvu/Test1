@@ -1,24 +1,23 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import BankAccounts from './BankAccounts';
-
 class BankConnection extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isShowBankAccounts: false,
+      showBankAccounts: false,
     };
   }
-  onToggleBankAccounts = () => {
-    const { isShowBankAccounts } = this.state;
+  toggleBankAccounts = () => {
+    const { showBankAccounts } = this.state;
     this.setState({
-      isShowBankAccounts: !isShowBankAccounts,
+      showBankAccounts: !showBankAccounts,
     });
   };
   render() {
-    const { isShowBankAccounts } = this.state;
+    const { showBankAccounts } = this.state;
     const { connection, accounts } = this.props;
     return (
-      <div>
+      <Fragment>
         {/* connection header */}
         <div className="row mt-40">
           <div className="col-xs-1 col-sm-1 col-md-1 col-lg-1 fontF">
@@ -41,11 +40,11 @@ class BankConnection extends Component {
               <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2 right">
                 <i
                   className={
-                    isShowBankAccounts
+                    showBankAccounts
                       ? 'fa fa-chevron-down fontQuestion pointer'
                       : 'fa fa-chevron-right fontQuestion pointer'
                   }
-                  onClick={this.onToggleBankAccounts}
+                  onClick={this.toggleBankAccounts}
                 />
               </div>
             </div>
@@ -56,12 +55,12 @@ class BankConnection extends Component {
         {accounts &&
           accounts.map(account => {
             return (
-              isShowBankAccounts && (
+              showBankAccounts && (
                 <BankAccounts key={account.id} account={account} />
               )
             );
           })}
-      </div>
+      </Fragment>
     );
   }
 }
