@@ -1,5 +1,8 @@
 var express = require('express');
+var cors = require('cors');
 var app = express();
+
+app.use(cors());
 
 const data = {
   banking: {
@@ -1061,7 +1064,7 @@ app.delete('/del_user', function(req, res) {
 // This responds a GET request for the /list_user page.
 app.get('/getData', function(req, res) {
   console.log('Got a GET request for /data');
-  res.json(data);
+  res.send('abc');
 });
 
 // This responds a GET request for abcd, abxcd, ab123cd, and so on

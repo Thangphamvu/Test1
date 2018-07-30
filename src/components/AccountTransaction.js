@@ -89,7 +89,6 @@ const mapStateToProps = ({ tasks }) => ({
 });
 const mapDispatchToProps = dispatch => ({
   sortByTime: () => dispatch(actions.sortItems()),
-  getData: () => dispatch(actions.getData()),
 });
 export default connect(
   mapStateToProps,

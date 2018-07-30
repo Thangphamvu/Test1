@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import './App.css';
-import Header from './components/Header';
-import Content from './components/Content';
-import Footer from './components/Footer';
+import '../App.css';
+import Header from '../components/Header';
+import Content from '../components/Content';
+import Footer from '../components/Footer';
 
-class App extends Component {
+class AsyncApp extends Component {
   render() {
     return (
       <div className="App">
@@ -27,4 +27,4 @@ class App extends Component {
     );
   }
 }
-export default App;
+export default AsyncApp;

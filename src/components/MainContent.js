@@ -1,25 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { sortItems, getData } from '../actions';
+import { sortItems, fetchData } from '../actions';
 import BankConnection from './BankConnection';
-import { data } from '../data';
 
 class MainContent extends Component {
   componentDidMount() {
-    this.props.getData();
+    this.props.fetchData();
   }
+
   render() {
-    this.props.getData(1).then(data => {
-      console.log(data);
-    });
-    const { banking } = data;
-    console.log(banking);
+    const { isFetching, banking, error } = this.props;
+
+    if (isFetching) {
+      return <div className="alert alert-success">Loading....</div>;
+    } else if (!banking) {
+      return <div className="alert alert-danger">Data not found</div>;
+    } else if (error) {
+      return <div className="alert alert-danger">{error}</div>;
+    }
+
     return (
-      <div
-        className="col-xs-12 col-sm-12 col-md-9 col-lg-9"
-        action="http://127.0.0.1:8081/getData"
-        method="GET"
-      >
+      <div className="col-xs-12 col-sm-12 col-md-9 col-lg-9">
         <h3>Mein Banking</h3>
         <p>Meine Konten</p>
         <div>
@@ -65,12 +66,15 @@ class MainContent extends Component {
 
 export default connect(
   ({ tasks }) => ({
+    isFetching: tasks.isFetching,
+    banking: tasks.banking,
+    error: tasks.error,
     sortValue: tasks.sortValue,
     currentPage: tasks.currentPage,
     itemsPerPage: tasks.itemsPerPage,
   }),
   {
     sortItems,
-    getData,
+    fetchData,
   }
 )(MainContent);
